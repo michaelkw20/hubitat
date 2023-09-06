@@ -5,7 +5,7 @@ definition(
     description: "learning to write",
     category: "convienience",
     iconUrl: "",
-    iconXx2Url: "",
+    iconX2Url: "",
 )
 
 preferences {
