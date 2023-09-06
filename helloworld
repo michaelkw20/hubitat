@@ -1,11 +1,11 @@
 definition(
-    name: "Test hubitat app"
-    namespace: "Myapp"
-    author: 'Michael'
-    description: "learning to write"
-    category: "convienience"
-    iconUrl: ""
-    iconXx2Url: ""
+    name: "Test hubitat app",
+    namespace: "Myapp",
+    author: "Michael",
+    description: "learning to write",
+    category: "convienience",
+    iconUrl: "",
+    iconXx2Url: "",
 )
 
 preferenfces {
