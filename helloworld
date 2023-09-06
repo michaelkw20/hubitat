@@ -1,1 +1,34 @@
+definition(
+    name: "Test hubitat app"
+    namespace: "Myapp"
+    author: 'Michael'
+    description: "learning to write"
+    category: "convienience"
+    iconUrl: ""
+    iconXx2Url: ""
+)
 
+preferenfces {
+    page(name: "mainPage", title: "MyPage", install: true, uninstall: true) {
+        section {
+            paragraph "Hello, World!"
+        }
+    }
+}
+
+//this is called when the app is first installed
+def installed() {
+    log.trace "installed()"
+    //at the moment it is just logging when it happens
+}
+
+//this happens when the user clicks on done
+def updated() {
+    log.trace "updated()"
+}
+
+//this is called when the app is uninstalled
+def uninstalled() {
+    log.trace "uninstalled()"
+}
+    
