@@ -8,7 +8,7 @@ definition(
     iconXx2Url: "",
 )
 
-preferenfces {
+preferences {
     page(name: "mainPage", title: "MyPage", install: true, uninstall: true) {
         section {
             paragraph "Hello, World!"
