@@ -9,7 +9,7 @@ definition(
 )
 
 preferences {
-    page(name: "mainPage", title: "MyPage", install: true, uninstall: true) {
+    page(name: "mainPage", title: "This is a test", install: true, uninstall: true) {
         section {
             paragraph "Hello, World!"
         }
