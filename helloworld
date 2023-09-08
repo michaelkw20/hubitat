@@ -24,8 +24,8 @@ preferences {
 def installed() {
     subscribe(triggerSwitch, "switch.on", triggerSwitchHandler)
     subscribe(triggerSwitch, "switch.off", triggerSwitchHandler)
-    log.info("Turn On/Off Switches with Temperature app installed. Logging enabled.")
     updateLoggingLevel(3) // Set logging level to 3 (info)
+    log.info("Turn On/Off Switches with Temperature app installed. Logging enabled.")
 }
 
 def updated() {
@@ -35,7 +35,7 @@ def updated() {
 }
 
 def updateLoggingLevel(level) {
-    sendLocationEvent(name: "logLevel", value: level.toString(), descriptionText: "Set logging level to ${level}")
+    state.loggingLevel = level.toString()
     log.info("Logging level set to ${level}")
 }
 
