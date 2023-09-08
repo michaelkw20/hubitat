@@ -1,34 +1,67 @@
 definition(
-    name: "Test hubitat app",
-    namespace: "Myapp",
-    author: "Michael",
-    description: "learning to write",
-    category: "convienience",
+    name: "Turn On/Off Switches with Temperature",
+    namespace: "yournamespace",
+    author: "Your Name",
+    description: "Turn on/off switches based on temperature",
+    category: "My Apps",
     iconUrl: "",
     iconX2Url: "",
+    iconX3Url: ""
 )
 
 preferences {
-    page(name: "mainPage", title: "This is a test", install: true, uninstall: true) {
-        section {
-            paragraph "Hello, World!"
-        }
+    section("Switch Settings") {
+        input "triggerSwitch", "capability.switch", title: "Select Trigger Switch", required: true
+        input "switch1", "capability.switch", title: "Select Switch 1", required: true
+        input "switch2", "capability.switch", title: "Select Switch 2", required: true
+        input "switch3", "capability.switch", title: "Select Switch 3", required: true
+    }
+    section("Temperature Settings") {
+        input "thermostat", "capability.thermostat", title: "Select Thermostat", required: true
     }
 }
 
-//this is called when the app is first installed
 def installed() {
-    log.trace "installed()"
-    //at the moment it is just logging when it happens
+    subscribe(triggerSwitch, "switch.on", triggerSwitchHandler)
+    subscribe(triggerSwitch, "switch.off", triggerSwitchHandler)
 }
 
-//this happens when the user clicks on done
 def updated() {
-    log.trace "updated()"
+    unsubscribe()
+    subscribe(triggerSwitch, "switch.on", triggerSwitchHandler)
+    subscribe(triggerSwitch, "switch.off", triggerSwitchHandler)
 }
 
-//this is called when the app is uninstalled
-def uninstalled() {
-    log.trace "uninstalled()"
+def triggerSwitchHandler(evt) {
+    if (evt.value == "on") {
+        if (isTemperatureAboveThreshold(8) && !switch2.currentSwitch == "on") {
+            switch3.on()
+            runIn(10, turnOnSwitch1)
+        } else if (!switch3.currentSwitch == "on" && !switch2.currentSwitch == "on" && isTemperatureAboveThreshold(2)) {
+            switch1.on()
+            runIn(10, turnOnSwitch2)
+        }
+    } else {
+        switch1.off()
+        switch3.off()
+    }
 }
-    
+
+def turnOnSwitch1() {
+    if (isTemperatureAboveThreshold(2)) {
+        switch1.on()
+    } else {
+        switch1.off()
+    }
+}
+
+def turnOnSwitch2() {
+    switch2.on()
+}
+
+def isTemperatureAboveThreshold(threshold) {
+    def currentTemperature = thermostat.currentValue("temperature")
+    def coolingSetpoint = thermostat.currentValue("coolingSetpoint")
+    def temperatureThreshold = coolingSetpoint + threshold
+    return currentTemperature > temperatureThreshold
+}
