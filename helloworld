@@ -24,6 +24,7 @@ preferences {
 def installed() {
     subscribe(triggerSwitch, "switch.on", triggerSwitchHandler)
     subscribe(triggerSwitch, "switch.off", triggerSwitchHandler)
+    subscribe(thermostat, "temperature", temperatureHandler) // Subscribe to temperature updates
     updateLoggingLevel(3) // Set logging level to 3 (info)
     log.info("Turn On/Off Switches with Temperature app installed. Logging enabled.")
 }
@@ -32,6 +33,7 @@ def updated() {
     unsubscribe()
     subscribe(triggerSwitch, "switch.on", triggerSwitchHandler)
     subscribe(triggerSwitch, "switch.off", triggerSwitchHandler)
+    subscribe(thermostat, "temperature", temperatureHandler) // Subscribe to temperature updates
 }
 
 def updateLoggingLevel(level) {
@@ -79,4 +81,10 @@ def isTemperatureAboveThreshold(threshold) {
     def coolingSetpoint = thermostat.currentValue("coolingSetpoint")
     def temperatureThreshold = coolingSetpoint + threshold
     return currentTemperature > temperatureThreshold
+}
+
+def temperatureHandler(evt) {
+    // This handler will be called when the thermostat reports a temperature change
+    // You can add any temperature-related logic here if needed
+    log.info("Temperature updated to ${evt.value}")
 }
