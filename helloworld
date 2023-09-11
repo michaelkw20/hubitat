@@ -25,7 +25,7 @@ def installed() {
     subscribe(triggerSwitch, "switch.on", triggerSwitchHandler)
     subscribe(triggerSwitch, "switch.off", triggerSwitchHandler)
     subscribe(thermostat, "temperature", temperatureHandler) // Subscribe to temperature updates
-    updateLoggingLevel(3) // Set logging level to 3 (info)
+    updateLoggingLevel(4) // Set logging level to 4 (debug)
     log.info("Turn On/Off Switches with Temperature app installed. Logging enabled.")
 }
 
