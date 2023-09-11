@@ -46,18 +46,19 @@ def triggerSwitchHandler(evt) {
         if (isTemperatureAboveThreshold(8) && !switch2.currentSwitch == "on") {
             switch1.on()
             log.info("Turning on Switch 1: Wetting cooling pads")
-            runIn(10, turnOnSwitch3)
+            runIn(1, turnOnSwitch3)
             log.info("Starting fan in hi mode")
         } else if (!switch3.currentSwitch == "on" && !switch2.currentSwitch == "on" && isTemperatureAboveThreshold(2)) {
             switch1.on()
             log.info("Turning on Switch 1: Wetting cooling pads")
-            runIn(10, turnOnSwitch2)
+            runIn(1, turnOnSwitch2)
             log.info("Starting fan in lo mode")
         }
     } else {
         switch1.off()
         switch3.off()
-        log.info("Turning off Switch 1 and Switch 3")
+        switch3.off()
+        log.info("Turning off Switch 1, 2 and 3")
     }
 }
 
