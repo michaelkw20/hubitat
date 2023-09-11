@@ -56,7 +56,7 @@ def triggerSwitchHandler(evt) {
         }
     } else {
         switch1.off()
-        switch3.off()
+        switch2.off()
         switch3.off()
         log.info("Turning off Switch 1, 2 and 3")
     }
