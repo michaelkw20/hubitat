@@ -45,14 +45,17 @@ def triggerSwitchHandler(evt) {
     if (evt.value == "on") {
         if (isTemperatureAboveThreshold(8)) {
             switch1.on()
-            log.info("Turning on Switch 1: Wetting cooling pads")
-            runIn(10, turnOnSwitch3)
+            log.info("High cool activated, checking if pump is needed")
+            runIn(2, turnOnSwitch1)
             log.info("Requesting fan to start on high speed in 1 minute")
-        } else if (!switch3.currentSwitch == "on" && !switch2.currentSwitch == "on" && isTemperatureAboveThreshold(2)) {
+            runIn(10, turnOnSwitch3)
+            
+        } else if (isTemperatureAboveThreshold(2)) {
             switch1.on()
-            log.info("Turning on Switch 1: Wetting cooling pads")
+            log.info("Low cool activated, checking if pump is needed")
+            runIn(2, turnOnSwitch1)
+            log.info("requesting fan to start on low mode in 1 minute")
             runIn(10, turnOnSwitch2)
-            log.info("requesting fan to start on lo mode in 1 minute")
         }  else {
             runIn(15, turnOnSwitch1)
         }
@@ -72,13 +75,13 @@ def turnOnSwitch1() {
 
     if (currentTemperature > temperatureThreshold2) {
         switch1.on()
-        log.info("Turning on Switch 1 (With High Fan)")
+        log.info("Turning on pump (Wetting pads)")
     } else if (currentTemperature > temperatureThreshold1) {
         switch1.on()
-        log.info("Turning on Switch 1 (With Low Fan)")
+        log.info("Turning on pump (Wetting pads)")
     } else {
         switch1.off()
-        log.info("Turning off Switch 1 (No need for pump)")
+        log.info("Turning off pump (No need for pump)")
     }
 }
 
