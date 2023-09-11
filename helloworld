@@ -47,19 +47,25 @@ def triggerSwitchHandler(evt) {
             switch1.on()
             log.info("Turning on Switch 1: Wetting cooling pads")
             runIn(10, turnOnSwitch3)
-            log.info("requesting fan to start in high speed")
+            log.info("Requesting fan to start on high speed in 1 minute")
         } else if (!switch3.currentSwitch == "on" && !switch2.currentSwitch == "on" && isTemperatureAboveThreshold(2)) {
             switch1.on()
             log.info("Turning on Switch 1: Wetting cooling pads")
-            runIn(1, turnOnSwitch2)
-            log.info("Starting fan in lo mode")
+            runIn(10, turnOnSwitch2)
+            log.info("requesting fan to start on lo mode in 1 minute")
+        } else if (isTemperatureAboveThreshold(2) && isTemperatureBelowThreshold(8)) {
+            // Add this condition to turn on Switch 2 if the temperature is in the desired range.
+            switch1.on()
+            log.info("Turning on Switch1: Wetting cooling pads")
+            runIn(10, turnOnSwitch2)
+            log.info("requesting fan to start on lo mode in 1 minute")
         }
     } else {
         switch1.off()
         switch2.off()
         switch3.off()
-        log.info("Turning off Switch 1, 2 and 3")
-    }
+        log.info("Turning switch 1, 2 and 3 off")
+}
 }
 
 def turnOnSwitch1() {
@@ -86,8 +92,15 @@ def turnOnSwitch3() {
         log.info("Turning off Switch 3: Turning off high-speed fan")
     }
 }
+//Temp below 8 degrees above set point
+def isTemperatureBelowThreshold(threshold) {
+    def currentTemperature = thermostat.currentValue("temperature")
+    def coolingSetpoint = thermostat.currentValue("coolingSetpoint")
+    def temperatureThreshold = coolingSetpoint + threshold
+    return currentTemperature < temperatureThreshold
+}
 
-
+//Temp above 8 degrees above the set point
 def isTemperatureAboveThreshold(threshold) {
     def currentTemperature = thermostat.currentValue("temperature")
     def coolingSetpoint = thermostat.currentValue("coolingSetpoint")
