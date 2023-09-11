@@ -53,7 +53,9 @@ def triggerSwitchHandler(evt) {
             log.info("Turning on Switch 1: Wetting cooling pads")
             runIn(10, turnOnSwitch2)
             log.info("requesting fan to start on lo mode in 1 minute")
-        }   runIn(15, turnOnSwitch1)
+        }  else {
+            runIn(15, turnOnSwitch1)
+        }
     } else {
         switch1.off()
         switch2.off()
