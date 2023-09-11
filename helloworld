@@ -77,6 +77,17 @@ def turnOnSwitch2() {
     log.info("Turning on Switch 2: Starting fan in lo mode")
 }
 
+def turnOnSwitch3() {
+    if (isTemperatureAboveThreshold(8)) {
+        switch3.on()
+        log.info("Turning on Switch 3: Turning on high-speed fan")
+    } else {
+        switch3.off()
+        log.info("Turning off Switch 3: Turning off high-speed fan")
+    }
+}
+
+
 def isTemperatureAboveThreshold(threshold) {
     def currentTemperature = thermostat.currentValue("temperature")
     def coolingSetpoint = thermostat.currentValue("coolingSetpoint")
