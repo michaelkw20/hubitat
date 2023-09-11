@@ -53,19 +53,7 @@ def triggerSwitchHandler(evt) {
             log.info("Turning on Switch 1: Wetting cooling pads")
             runIn(10, turnOnSwitch2)
             log.info("requesting fan to start on lo mode in 1 minute")
-        } else if (isTemperatureAboveThreshold(2) && isTemperatureBelowThreshold(8)) {
-            // turn on Switch 2 if the temperature is in the desired range.
-            switch1.on()
-            log.info("Turning on Switch1: Wetting cooling pads")
-            runIn(10, turnOnSwitch2)
-            log.info("requesting fan to start on lo mode in 1 minute")
-        } else if (isTemperatureAboveThreshold(2) && !switch1.currentSwitch == "on") {
-            switch1.on()
-            log.info("Turning on Switch 1")
-        } else if (isTemperatureBelowThreshold(2) && !switch1.currentSwitch == "on") {
-            switch1.off()
-            log.info("Turning switch 1 off as temperature is below threshold")
-        }
+        }   runIn(15, turnOnSwitch1)
     } else {
         switch1.off()
         switch2.off()
@@ -75,12 +63,20 @@ def triggerSwitchHandler(evt) {
 }
 
 def turnOnSwitch1() {
-    if (isTemperatureAboveThreshold(2)) {
+    def currentTemperature = thermostat.currentValue("temperature")
+    def coolingSetpoint = thermostat.currentValue("coolingSetpoint")
+    def temperatureThreshold1 = coolingSetpoint + 2
+    def temperatureThreshold2 = coolingSetpoint + 8
+
+    if (currentTemperature > temperatureThreshold2) {
         switch1.on()
-        log.info("Turning on Switch 1")
+        log.info("Turning on Switch 1 (With High Fan)")
+    } else if (currentTemperature > temperatureThreshold1) {
+        switch1.on()
+        log.info("Turning on Switch 1 (With Low Fan)")
     } else {
         switch1.off()
-        log.info("Turning off Switch 1")
+        log.info("Turning off Switch 1 (No need for pump)")
     }
 }
 
