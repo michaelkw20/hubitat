@@ -73,8 +73,7 @@ def triggerSwitchHandler(evt) {
         switch2.off()
         switch3.off()
         log.info("Turning switch 1, 2 and 3 off")
-}
-}
+    }
 
 def turnOnSwitch1() {
     if (isTemperatureAboveThreshold(2)) {
