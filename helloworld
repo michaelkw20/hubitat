@@ -43,7 +43,7 @@ def updateLoggingLevel(level) {
 
 def triggerSwitchHandler(evt) {
     if (evt.value == "on") {
-        if (isTemperatureAboveThreshold(8) && !switch2.currentSwitch == "on") {
+        if (isTemperatureAboveThreshold(8)) {
             switch1.on()
             log.info("Turning on Switch 1: Wetting cooling pads")
             runIn(1, turnOnSwitch3)
