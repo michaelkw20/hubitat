@@ -1,7 +1,7 @@
 definition(
     name: "Turn On/Off Switches with Temperature",
     namespace: "yournamespace",
-    author: "Your Name",
+    author: "Michael Keep",
     description: "Turn on/off switches based on temperature",
     category: "My Apps",
     iconUrl: "",
