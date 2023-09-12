@@ -56,7 +56,12 @@ def triggerSwitchHandler(evt) {
             runIn(2, turnOnSwitch1)
             log.info("requesting fan to start on low mode in 1 minute")
             runIn(10, turnOnSwitch2)
-        }  else {
+
+        }   else if (isTemperatureBelowThreshold(2)) {
+            log.info("Temperature is near setpoint, running fan only")
+            runIn(2, turnOnSwitch2)
+        }  
+        else {
             runIn(15, turnOnSwitch1)
         }
     } else {
