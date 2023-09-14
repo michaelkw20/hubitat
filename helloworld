@@ -112,6 +112,7 @@ def adjustFanSpeed() {
     def currentTemperature = thermostat.currentValue("temperature")
     def coolingSetpoint = thermostat.currentValue("coolingSetpoint")
     def temperatureThreshold1 = coolingSetpoint + 2
+    def temperatureThreshold2 = coolingSetpoint + 8
     
     if (currentTemperature > temperatureThreshold2) {
         // Set fan speed to high
