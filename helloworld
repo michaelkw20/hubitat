@@ -9,6 +9,9 @@ definition(
     iconX3Url: ""
 )
 
+//variable to keep track of the fan speed mode
+def fanSpeed = "low" //this is the inital fan speed 
+
 preferences {
     section("Switch Settings") {
         input "triggerSwitch", "capability.switch", title: "Select Trigger Switch", required: true
@@ -44,15 +47,13 @@ def updateLoggingLevel(level) {
 def triggerSwitchHandler(evt) {
     if (evt.value == "on") {
         if (isTemperatureAboveThreshold(8)) {
-            switch1.on()
-            log.info("High cool activated, checking if pump is needed")
+            log.info("High cool activated, pump required")
             runIn(2, turnOnSwitch1)
             log.info("Requesting fan to start on high speed in 1 minute")
             runIn(10, turnOnSwitch3)
             
         } else if (isTemperatureAboveThreshold(2)) {
-            switch1.on()
-            log.info("Low cool activated, checking if pump is needed")
+            log.info("Low cool activated, pump required")
             runIn(2, turnOnSwitch1)
             log.info("requesting fan to start on low mode in 1 minute")
             runIn(10, turnOnSwitch2)
@@ -96,14 +97,46 @@ def turnOnSwitch2() {
 }
 
 def turnOnSwitch3() {
-    if (isTemperatureAboveThreshold(8)) {
+     if (isTemperatureAboveThreshold(8)) {
         switch3.on()
         log.info("Turning on Switch 3: Turning on high-speed fan")
+        fanSpeed = "high" // Update fan speed to high when temperature threshold is met
     } else {
         switch3.off()
         log.info("Turning off Switch 3: Turning off high-speed fan")
+        fanSpeed = "low" // Update fan speed to low when temperature threshold is not met
     }
 }
+
+def adjustFanSpeed() {
+    def currentTemperature = thermostat.currentValue("temperature")
+    def coolingSetpoint = thermostat.currentValue("coolingSetpoint")
+    def temperatureThreshold1 = coolingSetpoint + 2
+    
+    if (currentTemperature > temperatureThreshold2) {
+        // Set fan speed to high
+        if (fanSpeed != "high") {
+            fanSpeed = "high"
+            // Code to activate high-speed fan
+            log.info("Switching to high-speed fan mode")
+        }
+    } else if (currentTemperature > temperatureThreshold1) {
+        // Set fan speed to low
+        if (fanSpeed != "low") {
+            fanSpeed = "low"
+            // Code to activate low-speed fan
+            log.info("Switching to low-speed fan mode")
+        }
+    } else {
+        // Turn off the fan (if needed)
+        if (fanSpeed != "off") {
+            fanSpeed = "off"
+            // Code to turn off the fan
+            log.info("Turning off the fan")
+        }
+    }
+}
+
 //Temp below 8 degrees above set point
 def isTemperatureBelowThreshold(threshold) {
     def currentTemperature = thermostat.currentValue("temperature")
@@ -124,4 +157,6 @@ def temperatureHandler(evt) {
     // This handler will be called when the thermostat reports a temperature change
     // You can add any temperature-related logic here if needed
     log.info("Temperature updated to ${evt.value}")
+    // Here I am adjusting fan speed based on the temperature
+    adjustFanSpeed()
 }
