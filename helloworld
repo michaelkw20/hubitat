@@ -118,17 +118,19 @@ def adjustFanSpeed() {
         // Set fan speed to high
         if (fanSpeed != "high") {
             fanSpeed = "high"
-            runIn(2, turnOnSwitch3)
+            // Code to activate high-speed fan
             log.info("Switching to high-speed fan mode")
-            switch2.off()
+            switch3.on() // Turn on high-speed fan
+            switch2.off() // Turn off low-speed fan if needed
         }
     } else if (currentTemperature > temperatureThreshold1) {
         // Set fan speed to low
         if (fanSpeed != "low") {
             fanSpeed = "low"
-            runIn(2, turnOnSwitch2)
+            // Code to activate low-speed fan
             log.info("Switching to low-speed fan mode")
-            switch3.off()
+            switch2.on() // Turn on low-speed fan
+            switch3.off() // Turn off high-speed fan if needed
         }
     } else {
         // Turn off the fan (if needed)
@@ -136,11 +138,12 @@ def adjustFanSpeed() {
             fanSpeed = "off"
             // Code to turn off the fan
             log.info("Turning off the fan")
-            // You can add code here to turn off switch2 or switch3 if needed
-            // Example: switch2.off()
+            switch2.off() // Turn off low-speed fan
+            switch3.off() // Turn off high-speed fan
         }
     }
 }
+
 
 
 //Temp below 8 degrees above set point
