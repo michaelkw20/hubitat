@@ -79,6 +79,10 @@ def turnOnSwitch1() {
     def temperatureThreshold1 = coolingSetpoint + 2
     def temperatureThreshold2 = coolingSetpoint + 8
 
+    log.debug("currentTemperature: ${currentTemperature}")
+    log.debug("temperatureThreshold1: ${temperatureThreshold1}")
+    log.debug("temperatureThreshold2: ${temperatureThreshold2}")
+
     if (currentTemperature > temperatureThreshold2) {
         switch1.on()
         log.info("Turning on pump (Wetting pads)")
