@@ -95,6 +95,7 @@ def turnOnSwitch1() {
     }
 }
 
+
 def turnOnSwitch2() {
     switch2.on()
     log.info("Turning on Switch 2: Starting fan in lo mode")
@@ -172,4 +173,21 @@ def temperatureHandler(evt) {
     log.info("Temperature updated to ${evt.value}")
     // Here I am adjusting fan speed based on the temperature
     adjustFanSpeed()
+    def continuousCheck() {
+    if (isTemperatureAboveThreshold(8)) {
+        log.info("High cool activated, pump required")
+        runIn(2, turnOnSwitch1)
+        runIn(10, turnOnSwitch3)
+    } else if (isTemperatureAboveThreshold(2)) {
+        log.info("Low cool activated, pump required")
+        runIn(2, turnOnSwitch1)
+        runIn(10, turnOnSwitch2)
+    } else if (isTemperatureBelowThreshold(2)) {
+        log.info("Temperature is near setpoint, running fan only")
+        runIn(2, turnOnSwitch2)
+    } else {
+        runIn(15, turnOnSwitch1)
+    }
+}
+
 }
