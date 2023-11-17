@@ -173,7 +173,11 @@ def temperatureHandler(evt) {
     log.info("Temperature updated to ${evt.value}")
     // Here I am adjusting fan speed based on the temperature
     adjustFanSpeed()
-    def continuousCheck() {
+    continuousCheck()
+
+}
+
+def continuousCheck() {
     if (isTemperatureAboveThreshold(8)) {
         log.info("High cool activated, pump required")
         runIn(2, turnOnSwitch1)
@@ -188,6 +192,4 @@ def temperatureHandler(evt) {
     } else {
         runIn(15, turnOnSwitch1)
     }
-}
-
 }
