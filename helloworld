@@ -118,7 +118,7 @@ def adjustFanSpeed() {
     def coolingSetpoint = thermostat.currentValue("coolingSetpoint")
     def temperatureThreshold1 = coolingSetpoint + 2
     def temperatureThreshold2 = coolingSetpoint + 8
-    
+
     if (currentTemperature > temperatureThreshold2) {
         // Set fan speed to high
         if (fanSpeed != "high") {
@@ -129,6 +129,15 @@ def adjustFanSpeed() {
             switch2.off() // Turn off low-speed fan if needed
         }
     } else if (currentTemperature > temperatureThreshold1) {
+        // Set fan speed to low
+        if (fanSpeed != "low") {
+            fanSpeed = "low"
+            // Code to activate low-speed fan
+            log.info("Switching to low-speed fan mode")
+            switch2.on() // Turn on low-speed fan
+            switch3.off() // Turn off high-speed fan if needed
+        }
+    } else if (currentTemperature < low_threshold) {
         // Set fan speed to low
         if (fanSpeed != "low") {
             fanSpeed = "low"
