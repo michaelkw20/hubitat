@@ -171,13 +171,11 @@ def temperatureHandler(evt) {
     // This handler will be called when the thermostat reports a temperature change
     // You can add any temperature-related logic here if needed
     log.info("Temperature updated to ${evt.value}")
+    
     // Here I am adjusting fan speed based on the temperature
     adjustFanSpeed()
-    continuousCheck()
-
-}
-
-def continuousCheck() {
+    
+    // Continuous check logic
     if (isTemperatureAboveThreshold(8)) {
         log.info("High cool activated, pump required")
         runIn(2, turnOnSwitch1)
@@ -193,3 +191,4 @@ def continuousCheck() {
         runIn(15, turnOnSwitch1)
     }
 }
+
